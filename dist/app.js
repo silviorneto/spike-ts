@@ -1,20 +1,7 @@
 "use strict";
-class CPerson {
-    constructor(name) {
-        this.name = name;
-    }
-}
-class CPerson2 {
-    constructor(name, age, address = '') {
-        this.name = name;
-        if (age) {
-            this.age = age;
-        }
-        if (address) {
-            this.address = address;
-        }
-    }
-}
-let tu = new CPerson2('Tu');
-console.log(".... tu >>> ", tu);
+const errorEmail = {
+    id: 'email',
+    email: 'Not a valid mail',
+    username: 'Must init as a character'
+};
 //# sourceMappingURL=app.js.map

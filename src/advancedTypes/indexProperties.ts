@@ -1,17 +1,3 @@
-// const button = document.getElementById('btn')! as HTMLButtonElement
-
-// button.addEventListener("click", function() {
-//     this.style.background = 'blue'
-// })
-
-
-
-
-
-
-
-
-
 // Suponha que eu tenho um form e estou fazendo validação e tratamento de erros
 // crio uma interface para esses erros
 
