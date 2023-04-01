@@ -1,62 +1,62 @@
 "use strict";
-class DataStorage {
-    constructor() {
-        this.data = [];
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+const registeredValidators = {};
+function Required(target, propName) {
+    var _a, _b;
+    registeredValidators[target.constructor.name] = Object.assign(Object.assign({}, registeredValidators[target.constructor.name]), { [propName]: [...((_b = (_a = registeredValidators[target.constructor.name]) === null || _a === void 0 ? void 0 : _a[propName]) !== null && _b !== void 0 ? _b : []), 'required'] });
+}
+function PositiveNumber(target, propName) {
+    var _a, _b;
+    registeredValidators[target.constructor.name] = Object.assign(Object.assign({}, registeredValidators[target.constructor.name]), { [propName]: [...((_b = (_a = registeredValidators[target.constructor.name]) === null || _a === void 0 ? void 0 : _a[propName]) !== null && _b !== void 0 ? _b : []), 'positive'] });
+}
+function validate(obj) {
+    const objValidatorConfig = registeredValidators[obj.constructor.name];
+    if (!objValidatorConfig) {
+        return true;
     }
-    addItem(item) {
-        this.data.push(item);
+    let isValid = true;
+    for (const prop in objValidatorConfig) {
+        for (const validator of objValidatorConfig[prop]) {
+            switch (validator) {
+                case 'required':
+                    isValid = isValid && !!obj[prop];
+                    break;
+                case 'positive':
+                    isValid = isValid && obj[prop] > 0;
+                    break;
+            }
+        }
     }
-    removeItem(item) {
-        this.data = this.data.filter(i => i !== item);
-    }
-    getItems() {
-        return [...this.data];
+    return isValid;
+}
+class Course {
+    constructor(t, p) {
+        this.title = t;
+        this.price = p;
     }
 }
-const textStorage = new DataStorage();
-textStorage.addItem('oi');
-textStorage.addItem('tudo');
-textStorage.addItem('bem');
-textStorage.addItem('?');
-console.log(textStorage.getItems());
-textStorage.removeItem('?');
-console.log(textStorage.getItems());
-const numberStorage = new DataStorage();
-numberStorage.addItem(5);
-numberStorage.addItem(10);
-numberStorage.addItem(59);
-console.log(numberStorage.getItems());
-const multipleDataStorage = new DataStorage();
-multipleDataStorage.addItem(10);
-multipleDataStorage.addItem('oi');
-console.log(multipleDataStorage.getItems());
-class ObjectStorage {
-    constructor() {
-        this.data = [];
+__decorate([
+    Required
+], Course.prototype, "title", void 0);
+__decorate([
+    PositiveNumber
+], Course.prototype, "price", void 0);
+const courseForm = document.querySelector('form');
+courseForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const titleEl = document.getElementById('title');
+    const priceEl = document.getElementById('price');
+    const title = titleEl.value;
+    const price = +priceEl.value;
+    const createdCourse = new Course(title, price);
+    if (!validate(createdCourse)) {
+        alert('Invalid input, please try again');
     }
-    addItem(...item) {
-        this.data = this.data.concat(item);
-    }
-    removeItem(id) {
-        this.data = this.data.filter(i => i.id !== id);
-    }
-    getItems() {
-        return [...this.data];
-    }
-}
-class Person {
-    constructor(id, name, age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
-}
-const silvio = new Person(1, 'Silvio', 23);
-const claudia = new Person(2, 'Claudia', 21);
-const uri = new Person(3, 'Uri', 22);
-const personStorage = new ObjectStorage();
-personStorage.addItem(silvio, claudia, uri);
-console.log(personStorage.getItems());
-personStorage.removeItem(silvio.id);
-console.log(personStorage.getItems());
+    console.log(createdCourse);
+});
 //# sourceMappingURL=app.js.map
